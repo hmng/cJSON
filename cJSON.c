@@ -313,11 +313,12 @@ static const char *parse_array(cJSON *item,const char *value)
 
 	while (*value==',')
 	{
-	    if (*skip(value+1)==']') {value=skip(value+1);break;}
+	    const char *nextch = skip(value+1);
+	    if (nextch!=0 && *nextch==']') {value=nextch;break;}
 		cJSON *new_item;
 		if (!(new_item=cJSON_New_Item())) return 0; 	/* memory fail */
 		child->next=new_item;new_item->prev=child;child=new_item;
-		value=skip(parse_value(child,skip(value+1)));
+		value=skip(parse_value(child,nextch));
 		if (!value) return 0;	/* memory fail */
 	}
 
@@ -397,11 +398,12 @@ static const char *parse_object(cJSON *item,const char *value)
 
 	while (*value==',')
 	{
-	    if (*skip(value+1)=='}'){value=skip(value+1);break;}
+	    const char *nextch = skip(value+1);
+	    if (nextch!=0 && *nextch=='}') {value=nextch;break;}
 		cJSON *new_item;
 		if (!(new_item=cJSON_New_Item()))	return 0; /* memory fail */
 		child->next=new_item;new_item->prev=child;child=new_item;
-		value=skip(parse_string(child,skip(value+1)));
+		value=skip(parse_string(child,nextch));
 		if (!value) return 0;
 		child->string=child->valuestring;child->valuestring=0;
 		if (*value!=':') {ep=value;return 0;}	/* fail! */
