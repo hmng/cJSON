@@ -64,6 +64,9 @@ extern void cJSON_InitHooks(cJSON_Hooks* hooks);
 
 /* Supply a block of JSON, and this returns a cJSON object you can interrogate. Call cJSON_Delete when finished. */
 extern cJSON *cJSON_Parse(const char *value);
+/* Supply a block of JSON, and this returns a cJSON object you can interrogate. Call cJSON_Delete when finished.
+ * end_ptr will point to 1 past the end of the JSON object */
+extern cJSON *cJSON_Parse_Stream(const char *value, char **end_ptr);
 /* Render a cJSON entity to text for transfer/storage. Free the char* when finished. */
 extern char  *cJSON_Print(cJSON *item);
 /* Render a cJSON entity to text for transfer/storage without any formatting. Free the char* when finished. */

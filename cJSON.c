@@ -259,6 +259,20 @@ cJSON *cJSON_Parse(const char *value)
 	return c;
 }
 
+/* Parse an object - create a new root, and populate
+ *  Also indicates where in the stream the Object ends. */
+cJSON *cJSON_Parse_Stream(const char *value, char **end_ptr)
+{
+	if(!end_ptr)
+		return NULL;
+	cJSON *c=cJSON_New_Item();
+	ep=0;
+	if (!c) return 0;       /* memory fail */
+
+	if (!(*end_ptr=parse_value(c,skip(value)))) {cJSON_Delete(c);return 0;}
+	return c;
+}
+
 /* Render a cJSON item/entity/structure to text. */
 char *cJSON_Print(cJSON *item)				{return print_value(item,0,1);}
 char *cJSON_PrintUnformatted(cJSON *item)	{return print_value(item,0,0);}
